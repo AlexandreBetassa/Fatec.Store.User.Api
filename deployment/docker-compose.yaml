@@ -25,42 +25,45 @@ services:
       - AppsettingsConfigurations__JwtConfiguration__SecretJwtKey=YjA2Nzk0MmJjMTUyNDgyNThhY2NmOWNlNmZkMDg2NDFhdXRodGVzdGU=
       - AppsettingsConfigurations__RedisConfiguration__ExpirationInMinutes=60
       - AppsettingsConfigurations__RedisConfiguration__Server=redis:6379
-      - AppsettingsConfigurations__Database=Server=store.cdgy200a0n54.sa-east-1.rds.amazonaws.com,1433;Initial Catalog=Store;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+      - AppsettingsConfigurations__Database=Server=fatecstore.cdgy200a0n54.sa-east-1.rds.amazonaws.com,1433;Initial Catalog=Fatec.Store.Users;User ID=admin;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
     depends_on:
       - redis
     networks:
       - app-network
 
   products-api:
-    image: fatecstore/products-api:20250412.2
+    image: fatecstore/products-api:20250412.4
     container_name: products-api
     ports:
       - "8081:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=store.cdgy200a0n54.sa-east-1.rds.amazonaws.com,1433;Initial Catalog=Store;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+      - ConnectionStrings__DefaultConnection=Server=fatecstore.cdgy200a0n54.sa-east-1.rds.amazonaws.com,1433;Initial Catalog=Fatec.Store.Products;User ID=admin;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
     depends_on:
       - redis
     networks:
       - app-network
- 
+
   carts-api:
-    image: fatecstore/carts-api:20250412.2
+    image: fatecstore/carts-api:20250412.4
     container_name: carts-api
     ports:
       - "8082:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=store.cdgy200a0n54.sa-east-1.rds.amazonaws.com,1433;Initial Catalog=Store;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+      - ConnectionStrings__DefaultConnection=Server=fatecstore.cdgy200a0n54.sa-east-1.rds.amazonaws.com,1433;Initial Catalog=Fatec.Store.Carts;User ID=admin;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
     depends_on:
       - redis
     networks:
       - app-network
 
   store-web:
-    image: fatecstore/web:latest
+    image: fatecstore/web:20250413.1
     container_name: store-web
+    ports:
+      - 80:80
     depends_on:
+      - carts-api
       - products-api
-      - user-api 
+      - user-api
     networks:
       - app-network
 

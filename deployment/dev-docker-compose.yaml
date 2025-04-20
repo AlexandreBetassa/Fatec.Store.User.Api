@@ -5,7 +5,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver_container
     environment:
-      SA_PASSWORD: "SQLestudo2024"
+      SA_PASSWORD: "*SQLestudo2024"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
@@ -38,7 +38,7 @@ services:
       - AppsettingsConfigurations__JwtConfiguration__SecretJwtKey=YjA2Nzk0MmJjMTUyNDgyNThhY2NmOWNlNmZkMDg2NDFhdXRodGVzdGU=
       - AppsettingsConfigurations__RedisConfiguration__ExpirationInMinutes=60
       - AppsettingsConfigurations__RedisConfiguration__Server=redis:6379
-      - AppsettingsConfigurations__Database=Server=sqlserver,1433;Initial Catalog=Store;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+      - AppsettingsConfigurations__Database=Server=sqlserver,1433;Initial Catalog=Fatec.Store.User;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
     depends_on:
       - sqlserver
       - redis
@@ -46,25 +46,25 @@ services:
       - app-network
 
   products-api:
-    image: fatecstore/products-api:20250412.2
+    image: fatecstore/products-api:20250412.4
     container_name: products-api
     ports:
       - "8081:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Initial Catalog=Store;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Initial Catalog=Fatec.Store.Products;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
     depends_on:
       - sqlserver
       - redis
     networks:
       - app-network
- 
+
   carts-api:
-    image: fatecstore/carts-api:20250412.2
+    image: fatecstore/carts-api:20250412.4
     container_name: carts-api
     ports:
       - "8082:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Initial Catalog=Store;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Initial Catalog=Fatec.Store.Carts;User ID=SA;Password=*SQLestudo2024;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;
     depends_on:
       - sqlserver
       - redis
@@ -75,8 +75,9 @@ services:
     image: fatecstore/web:latest
     container_name: store-web
     depends_on:
+      - carts-api
       - products-api
-      - user-api 
+      - user-api
     networks:
       - app-network
 
