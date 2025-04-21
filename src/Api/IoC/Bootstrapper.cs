@@ -1,4 +1,5 @@
-﻿using Fatec.Store.Framework.Core.Enums;
+﻿using Fatec.Store.Framework.Core.Bases.v1.Injections;
+using Fatec.Store.Framework.Core.Enums;
 using Fatec.Store.User.Api.Filters.v1;
 using Fatec.Store.User.Application.Commands.v1.Auth.GenerateToken;
 using Fatec.Store.User.Application.Commands.v1.Users.CreateUser;
@@ -8,6 +9,8 @@ using Fatec.Store.User.Domain.Interfaces.v1.Services;
 using Fatec.Store.User.Infrastructure.CrossCutting.Configurations.v1;
 using Fatec.Store.User.Infrastructure.Data.Context;
 using Fatec.Store.User.Infrastructure.Data.Repositories.v1;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -33,6 +36,7 @@ namespace Fatec.Store.User.Api.IoC
             services.AddHttpContextAccessor();
             services.ConfigureAuthentication(appSettingsConfigurations);
             services.InjectRedis(appSettingsConfigurations);
+            services.InjectValidators(typeof(CreateUserCommandValidator).Assembly);
         }
 
         private static void InjectRedis(this IServiceCollection services, AppsettingsConfigurations appSettingsConfigurations) =>

@@ -5,7 +5,9 @@ using Fatec.Store.User.Domain.Interfaces.v1.Services;
 using Fatec.Store.User.Infrastructure.CrossCutting.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 using UserAccount = Fatec.Store.User.Domain.Entities.v1.User;
 
 namespace Fatec.Store.User.Application.Commands.v1.Users.CreateUser
@@ -40,6 +42,25 @@ namespace Fatec.Store.User.Application.Commands.v1.Users.CreateUser
                 await _userRepository.SaveChangesAsync();
 
                 return Unit.Value;
+            }
+            catch (DbUpdateException ex)
+            {
+                var message = ex.InnerException.Message;
+
+                var match = Regex.Match(message, @"unique index '([^']+)'");
+                var constraintName = match.Success ? match.Groups[1].Value : null;
+
+                Logger.LogWarning(ex, $"Violação de chave única: {constraintName}");
+
+                string userFriendlyMessage = constraintName switch
+                {
+                    "IX_Login_Email" => "Email já cadastrado.",
+                    "IX_Login_UserName" => "Username já cadastrado.",
+                    "IX_Login_Cpf" => "CPF já cadastrado.",
+                    _ => "Ocorreu um erro finalizar o cadastro. Por favor tente novamente mais tarde ou contate o administrador."
+                };
+
+                throw new AlreadyExistsException(message: userFriendlyMessage);
             }
             catch (Exception ex)
             {
