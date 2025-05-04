@@ -39,7 +39,6 @@ namespace Fatec.Store.User.Application.Commands.v1.Users.PatchStatusUser
 
                 user.ChangeStatus();
 
-
                 await _userRepository.PatchAsync(id, x => x.SetProperty(x => x.Status, user.Status));
                 await _userRepository.SaveChangesAsync();
 

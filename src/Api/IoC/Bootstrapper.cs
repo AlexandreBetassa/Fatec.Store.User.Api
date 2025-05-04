@@ -9,8 +9,6 @@ using Fatec.Store.User.Domain.Interfaces.v1.Services;
 using Fatec.Store.User.Infrastructure.CrossCutting.Configurations.v1;
 using Fatec.Store.User.Infrastructure.Data.Context;
 using Fatec.Store.User.Infrastructure.Data.Repositories.v1;
-using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -83,7 +81,7 @@ namespace Fatec.Store.User.Api.IoC
         }
 
         private static void InjectContext(this IServiceCollection services, AppsettingsConfigurations appSettingsConfigurations) =>
-            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(appSettingsConfigurations!.Database));
+            services.AddDbContext<UserDbContext>(options => options.UseMySql(appSettingsConfigurations!.Database, ServerVersion.AutoDetect(appSettingsConfigurations!.Database)));
 
         private static void InjectRepositories(this IServiceCollection services)
         {

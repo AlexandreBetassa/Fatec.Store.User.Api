@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fatec.Store.User.Application.Services.v1
+namespace Fatec.Store.User.Infrastructure.Data.Services
 {
     public static class DatabaseManagementService
     {
@@ -16,6 +16,7 @@ namespace Fatec.Store.User.Application.Services.v1
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return;
             }
         }
