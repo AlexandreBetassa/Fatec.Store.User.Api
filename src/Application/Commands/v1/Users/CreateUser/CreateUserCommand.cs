@@ -2,7 +2,6 @@
 using Fatec.Store.User.Domain.Enums.v1;
 using Fatec.Store.User.Domain.Models.v1.Users;
 using MediatR;
-using System.Text.RegularExpressions;
 
 namespace Fatec.Store.User.Application.Commands.v1.Users.CreateUser
 {

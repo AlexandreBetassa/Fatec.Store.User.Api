@@ -8,9 +8,6 @@ namespace Fatec.Store.User.Domain.Entities.v1
     [Index("Email", IsUnique = true)]
     public class Login : BaseEntity
     {
-        [JsonIgnore]
-        public int Id { get; set; }
-
         public string UserName { get; set; }
 
         public string Email { get; set; }

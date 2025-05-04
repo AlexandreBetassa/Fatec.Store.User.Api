@@ -5,5 +5,7 @@ namespace Fatec.Store.User.Domain.Interfaces.v1.Repositories
     public interface IUserRepository : IRepository<Entities.v1.User>
     {
         Task<Entities.v1.User> GetByEmailOrUsernameAsync(string email);
+
+        Task<IEnumerable<Entities.v1.User?>> GetAllUserAsync();
     }
 }

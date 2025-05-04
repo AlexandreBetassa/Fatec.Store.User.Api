@@ -12,5 +12,11 @@ namespace Fatec.Store.User.Infrastructure.Data.Repositories.v1
             .AsNoTracking()
             .Include(user => user.Login)
             .FirstOrDefaultAsync(user => user.Login.Email.Equals(email) || user.Login.UserName.Equals(email));
+
+        public async Task<IEnumerable<Domain.Entities.v1.User?>> GetAllUserAsync() =>
+            await Context.Set<Domain.Entities.v1.User>()
+            .AsNoTracking()
+            .Include(user => user.Login)
+            .ToListAsync();
     }
 }
