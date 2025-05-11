@@ -14,6 +14,8 @@ namespace Fatec.Store.User.Application.Queries.v1.GetUserById
         public RolesUserEnum Role { get; set; }
 
         public DateTime Birthday { get; set; }
+
+        public bool Status { get; set; }
     }
 
     public class NameResponse

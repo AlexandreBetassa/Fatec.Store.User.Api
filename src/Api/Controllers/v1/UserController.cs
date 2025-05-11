@@ -44,6 +44,5 @@ namespace Fatec.Store.User.Api.Controllers.v1
             request.Id = id;
             return await ExecuteAsync(async () => await Mediator.Send(request), HttpStatusCode.NoContent);
         }
-
     }
 }

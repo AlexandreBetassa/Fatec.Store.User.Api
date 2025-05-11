@@ -2,6 +2,8 @@
 {
     public enum TypeEmailEnum
     {
-        RecoveryPassword
+        RecoveryPassword,
+        UpdatePassword,
+        DeactivateAccount
     }
 }

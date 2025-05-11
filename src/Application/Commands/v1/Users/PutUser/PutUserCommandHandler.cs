@@ -29,9 +29,6 @@ namespace Fatec.Store.User.Application.Commands.v1.Users.PutUser
                 var oldUser = await _userRepository.GetByIdAsync(request?.Id ?? 0) ??
                     throw new NotFoundException("Usuário não localizado !!!");
 
-                if (!IsSamePassword(request.Login.Password, request.Login.ConfirmPassword))
-                    throw new BadRequestException("As senhas não conferem !!!");
-
                 var newUser = Mapper.Map(request, oldUser);
 
                 if (IsEmailChanged(oldUser, newUser))
@@ -51,7 +48,5 @@ namespace Fatec.Store.User.Application.Commands.v1.Users.PutUser
 
         private static bool IsEmailChanged(Domain.Entities.v1.User oldUser, Domain.Entities.v1.User newUser) =>
              oldUser.Login.Email.Equals(newUser.Login.Email);
-
-        private static bool IsSamePassword(string password, string confirmPassword) => password.Equals(confirmPassword);
     }
 }
