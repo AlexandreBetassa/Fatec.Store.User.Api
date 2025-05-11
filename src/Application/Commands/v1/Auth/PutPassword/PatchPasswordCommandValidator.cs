@@ -6,9 +6,9 @@ namespace Fatec.Store.User.Application.Commands.v1.Auth.PutPassword
     {
         public PatchPasswordCommandValidator()
         {
-            RuleFor(x => x.RecoveryCode)
+            RuleFor(x => x.EmailCode)
                 .NotEmpty()
-                .WithMessage("Código de recuperação não foi informada.");
+                .WithMessage("Código não foi informado.");
 
             RuleFor(x => x.NewPassword)
                 .NotEmpty()

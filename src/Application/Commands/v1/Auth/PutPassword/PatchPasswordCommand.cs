@@ -6,7 +6,7 @@ namespace Fatec.Store.User.Application.Commands.v1.Auth.PutPassword
     {
         public string Email { get; set; }
 
-        public string RecoveryCode { get; set; }
+        public string EmailCode { get; set; }
 
         public string NewPassword { get; set; }
 

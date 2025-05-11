@@ -6,11 +6,11 @@ using System.Net;
 
 namespace Fatec.Store.User.Api.Controllers.v1
 {
-    [Route("api/v1")]
+    [Route("api/v1/notification")]
     [ApiController]
     public class NotificationController(IMediator mediator) : BaseController<AuthController>(mediator)
     {
-        [HttpPost("recovery")]
+        [HttpPost]
         public async Task<IActionResult> SendEmailAsync([FromBody] SendEmailCommand request) =>
              await ExecuteAsync(async () => await Mediator.Send(request), HttpStatusCode.Created);
     }
