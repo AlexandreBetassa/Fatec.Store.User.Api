@@ -1,14 +1,17 @@
 ﻿using Fatec.Store.Framework.Core.Bases.v1.Injections;
 using Fatec.Store.Framework.Core.Enums;
 using Fatec.Store.User.Api.Filters.v1;
-using Fatec.Store.User.Application.Commands.v1.Auth.GenerateToken;
-using Fatec.Store.User.Application.Commands.v1.Users.CreateUser;
-using Fatec.Store.User.Application.Services.v1;
+using Fatec.Store.User.Application.v1.Commands.Auth.GenerateToken;
+using Fatec.Store.User.Application.v1.ServiceClients;
+using Fatec.Store.User.Application.v1.Services;
+using Fatec.Store.User.Application.v1.Users.CreateUser;
+using Fatec.Store.User.Domain.Interfaces.v1.DomainServices;
 using Fatec.Store.User.Domain.Interfaces.v1.Repositories;
 using Fatec.Store.User.Domain.Interfaces.v1.Services;
-using Fatec.Store.User.Infrastructure.CrossCutting.Configurations.v1;
-using Fatec.Store.User.Infrastructure.Data.Context;
-using Fatec.Store.User.Infrastructure.Data.Repositories.v1;
+using Fatec.Store.User.Infrastructure.CrossCutting;
+using Fatec.Store.User.Infrastructure.Data.v1.Context;
+using Fatec.Store.User.Infrastructure.Data.v1.Repositories;
+using Fatec.Store.User.Infrastructure.Data.v1.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -34,6 +37,7 @@ namespace Fatec.Store.User.Api.IoC
             services.AddHttpContextAccessor();
             services.ConfigureAuthentication(appSettingsConfigurations);
             services.InjectRedis(appSettingsConfigurations);
+            services.InjectServiceClients();
             services.InjectValidators(typeof(CreateUserCommandValidator).Assembly);
         }
 
@@ -75,9 +79,14 @@ namespace Fatec.Store.User.Api.IoC
 
         private static void InjectServices(this IServiceCollection services)
         {
-            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IEmailServiceClient, EmailServiceClient>();
             services.AddTransient<IRedisService, RedisService>();
             services.AddTransient(typeof(IPasswordServices), typeof(PasswordService));
+        }
+
+        private static void InjectServiceClients(this IServiceCollection services)
+        {
+            services.AddHttpClient<ICartServiceClient, CartServiceClient>();
         }
 
         private static void InjectContext(this IServiceCollection services, AppsettingsConfigurations appSettingsConfigurations) =>

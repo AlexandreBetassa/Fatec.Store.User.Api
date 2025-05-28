@@ -2,7 +2,6 @@
 using Fatec.Store.User.Domain.Enums.v1;
 using Fatec.Store.User.Domain.Models.v1.Users;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace Fatec.Store.User.Domain.Entities.v1
 {

@@ -1,6 +1,5 @@
 ﻿using Fatec.Store.Framework.Core.Bases.v1.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 
 namespace Fatec.Store.User.Domain.Entities.v1
 {

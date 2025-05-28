@@ -1,0 +1,15 @@
+﻿using MediatR;
+
+namespace Fatec.Store.User.Application.v1.Commands.Auth.PutPassword
+{
+    public class PatchPasswordCommand : IRequest<Unit>
+    {
+        public string Email { get; set; }
+
+        public string EmailCode { get; set; }
+
+        public string NewPassword { get; set; }
+
+        public string ConfirmNewPassword { get; set; }
+    }
+}

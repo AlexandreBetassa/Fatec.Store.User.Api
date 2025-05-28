@@ -9,4 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Fatec.Store.Framework.Core" Version="8.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="v1\Configurations\v1\" />
+  </ItemGroup>
 </Project>
