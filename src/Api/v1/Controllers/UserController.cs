@@ -4,6 +4,7 @@ using Fatec.Store.User.Application.v1.Queries.GetAllUsersAdmin;
 using Fatec.Store.User.Application.v1.Queries.GetUserById;
 using Fatec.Store.User.Application.v1.Users.CreateUser;
 using Fatec.Store.User.Application.v1.Users.PutUser;
+using Fatec.Store.User.Domain.Enums.v1;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,19 +17,17 @@ namespace Fatec.Store.User.Api.v1.Controllers
     public class UserController(IMediator mediator) : BaseController<UserController>(mediator)
     {
         [HttpPatch("{id}/status")]
-        //[Authorize(Policy = nameof(AccessPoliciesEnum.Write))]
+        [Authorize(Policy = nameof(RolesUserEnum.All))]
         public async Task<IActionResult> PatchAsync(int id) =>
             await ExecuteAsync(async () => await Mediator.Send(new PatchStatusUserCommand(id)), HttpStatusCode.NoContent);
 
         [HttpGet]
-        [AllowAnonymous]
-        //[Authorize(Policy = nameof(AccessPoliciesEnum.Write))]
+        [Authorize(Policy = nameof(RolesUserEnum.Admin))]
         public async Task<IActionResult> GetAsync() =>
             await ExecuteAsync(async () => await Mediator.Send(new GetAllUsersAdminQuery()), HttpStatusCode.OK);
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
-        //[Authorize(Policy = nameof(AccessPoliciesEnum.Write))]
+        [Authorize(Policy = nameof(RolesUserEnum.All))]
         public async Task<IActionResult> GetUserByIdAsync(int id) =>
             await ExecuteAsync(async () => await Mediator.Send(new GetUserByIdQuery(id)), HttpStatusCode.OK);
 
@@ -38,7 +37,7 @@ namespace Fatec.Store.User.Api.v1.Controllers
             await ExecuteAsync(async () => await Mediator.Send(request), HttpStatusCode.Created);
 
         [HttpPut("{id}")]
-        [AllowAnonymous]
+        [Authorize(Policy = nameof(RolesUserEnum.All))]
         public async Task<IActionResult> PutUserAsync([FromBody] PutUserCommand request, [FromRoute] int id)
         {
             request.Id = id;
