@@ -1,10 +1,10 @@
 ﻿using Fatec.Store.Framework.Core.Bases.v1.Injections;
-using Fatec.Store.Framework.Core.Enums;
 using Fatec.Store.User.Api.Filters.v1;
 using Fatec.Store.User.Application.v1.Commands.Auth.GenerateToken;
 using Fatec.Store.User.Application.v1.ServiceClients;
 using Fatec.Store.User.Application.v1.Services;
 using Fatec.Store.User.Application.v1.Users.CreateUser;
+using Fatec.Store.User.Domain.Enums.v1;
 using Fatec.Store.User.Domain.Interfaces.v1.DomainServices;
 using Fatec.Store.User.Domain.Interfaces.v1.Repositories;
 using Fatec.Store.User.Domain.Interfaces.v1.Services;
@@ -65,10 +65,9 @@ namespace Fatec.Store.User.Api.IoC
             });
 
             services.AddAuthorizationBuilder()
-              .AddPolicy(nameof(AccessPoliciesEnum.Write),
-                policy => policy.RequireRole(appSettingsConfigurations.JwtConfiguration!.WriteRoles))
-             .AddPolicy(nameof(AccessPoliciesEnum.Read),
-                policy => policy.RequireRole(appSettingsConfigurations.JwtConfiguration!.ReadRoles));
+             .AddPolicy(nameof(RolesUserEnum.All), policy => policy.RequireAuthenticatedUser())
+             .AddPolicy(nameof(RolesUserEnum.Admin), policy => policy.RequireRole(appSettingsConfigurations.JwtConfiguration!.AdminRoles))
+             .AddPolicy(nameof(RolesUserEnum.User), policy => policy.RequireRole(appSettingsConfigurations.JwtConfiguration!.UserRoles));
         }
 
         private static void InjectAutoMapper(this IServiceCollection services) =>
